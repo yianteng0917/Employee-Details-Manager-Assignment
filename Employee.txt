@@ -1,0 +1,51 @@
+ID	Full Name	Job Title			Department	Gender	Age	Hire Date	Monthly Salary
+EMP001	Sarah Jenkins	Senior Software Engineer	Engineering	Female	32	2021-04-15	8500
+EMP002	Marcus Vance	Product Manager			Product		Male	38	2019-11-01	9200
+EMP003	Elena Rostova	UX Designer			Design		Female	27	2023-01-10	6800
+EMP004	David Chen	Data Analyst			Analytics	Male	29	2022-07-22	7100
+EMP005	Aisha Patel	HR Specialist			Human Resources	Female	35	2020-03-05	6000
+EMP006	James O'Connor	Financial Controller		Finance		Male	44	2018-08-19	10500
+EMP007	Maya Lin	Marketing Director		Marketing	Female	41	2017-05-12	11000
+EMP008	Liam Smith	DevOps Engineer			Engineering	Male	30	2022-02-14	8200
+EMP009	Sofia Garcia	Customer Success Manager	Support		Female	26	2023-06-01	5500
+EMP010	Noah Taylor	Sales Executive			Sales		Male	33	2021-09-18	6500
+EMP011	Olivia Brown	Content Strategist		Marketing	Female	29	2022-11-05	6300
+EMP012	Lucas Martinez	Backend Developer		Engineering	Male	31	2020-10-11	8000
+EMP013	Mia Robinson	QA Engineer			Engineering	Female	28	2023-03-20	6200
+EMP014	Ethan Clark	Legal Counsel			Legal		Male	45	2016-01-15	12500
+EMP015	Harper Lewis	Office Manager			Administration	Female	39	2019-07-08	5800
+EMP016	Mason Walker	Security Analyst		IT		Male	36	2021-12-01	8800
+EMP017	Evelyn Hall	Accountant			Finance		Female	34	2020-05-19	6400
+EMP018	Logan Allen	Business Analyst		Analytics	Male	32	2022-04-10	7300
+EMP019	Abigail Young	Graphic Designer		Design		Female	25	2023-08-15	5900
+EMP020	Benjamin King	Systems Administrator		IT		Male	40	2018-11-22	8100
+EMP021	Ella Wright	PR Specialist			Marketing	Female	31	2021-06-14	6700
+EMP022	Jackson Scott	Frontend Developer		Engineering	Male	27	2023-02-01	7500
+EMP023	Chloe Torres	Product Designer		Design		Female	29	2022-09-12	7000
+EMP024	Aiden Flores	Sales Manager			Sales		Male	42	2017-10-05	9500
+EMP025	Lily Green	Talent Acquisition Lead		Human Resources	Female	37	2019-04-25	7200
+EMP026	Samuel Adams	Network Engineer		IT		Male	35	2020-08-30	7900
+EMP027	Grace Baker	Compliance Officer		Legal		Female	38	2018-12-03	8600
+EMP028	Henry Gonzalez	Research Scientist		R&D		Male	43	2016-06-20	11500
+EMP029	Zoey Nelson	Social Media Manager		Marketing	Female	26	2023-04-18	5600
+EMP030	Sebastian Lim	Solutions Architect		Engineering	Male	41	2017-09-14	12000
+EMP031	Hannah Mitchell	Executive Assistant		Administration	Female	33	2021-01-25	6100
+EMP032	Jack Perez	Data Engineer			Analytics	Male	30	2022-03-11	8400
+EMP033	Victoria Ruth	Brand Manager			Marketing	Female	36	2019-08-15	8300
+EMP034	Owen Turner	Account Executive		Sales		Male	28	2023-05-10	6600
+EMP035	Phillips Tan	Operations Manager		Operations	Female	44	2015-11-20	10000
+EMP036	Matthew Bell	Database Administrator		IT		Male	39	2019-02-18	8700
+EMP037	Layla Parker	UX Researcher			Design		Female	32	2021-07-05	7400
+EMP038	Luke Evans	DevOps Lead			Engineering	Male	35	2020-01-12	9800
+EMP039	Nora Edwards	Financial Analyst		Finance		Female	29	2022-10-01	7000
+EMP040	Gabriel Collins	Support Specialist		Support		Male	27	2023-07-14	5200
+EMP041	Hazel Stewart	Event Coordinator		Marketing	Female	31	2021-05-20	5900
+EMP042	Julian Sanchez	Full Stack Developer		Engineering	Male	34	2020-09-08	8300
+EMP043	Aurora Morris	HR Generalist			Human Resources	Female	30	2022-06-15	6200
+EMP044	Ryan Rogers	Risk Manager			Finance		Male	46	2014-04-10	11800
+EMP045	Brooklyn Reed	Copywriter			Marketing	Female	28	2023-01-30	5700
+EMP046	Nathan Cook	Cloud Architect			IT		Male	38	2018-03-22	11200
+EMP047	Savannah Morgan	Biostatistician			R&D		Female	33	2021-10-09	9000
+EMP048	Christian Bell	Technical Writer		Engineering	Male	37	2019-12-05	7100
+EMP049	Skylar Murphy	Workspace Designer		Administration	Female	29	2022-08-19	6400
+EMP050	Hunter Bailey	Logistics Coordinator		Operations	Male	32	2021-11-15	6300
