@@ -1,4 +1,5 @@
 #include<iostream>
+#include <cctype>
 #include<fstream>
 #include<sstream>
 #include<string>
@@ -37,7 +38,13 @@ using namespace std;
     string readNonEmptyLine(const string &prompt);
     bool readYesNo(const string &prompt);
     string toLowerCase(string text);
-    
+    string readForM(const string &prompt);
+    string toCapitalize(string text);
+
+    // Error handling
+    void printError(const string &msg);
+    void printSuccess(const string &msg);
+
     bool loadEmployees(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count)
 
     {
@@ -305,9 +312,91 @@ using namespace std;
 
     // Lalitaa'a part
 
+    // Add
+    void addEmployee(string employeeID[], string name[], string jobTitle[], string department[],
+                     string gender[], int age[], string hireDate[], double salary[], int &count)
+    {
+        cout << "\n=========================ADD EMPLOYEE============================\n\n";
+
+        if (count >= MAX_EMPLOYEES)
+        {
+            cout << "Employee list is full! Cannot enter a new employee.\n\n";
+            return;
+        }
+
+        cout << "Please enter the following details for the new employee:\n";
+
+        // 1. Validate unique Employee ID (Format: EMP001)
+        string newID;
+        while (true)
+        {
+            newID = readNonEmptyLine("Employee ID (e.g., EMP001): ");
+            for (int i = 0; i < 3 && i < (int)newID.length(); i++)
+            {
+                newID[i] = toupper(newID[i]);
+            }
+
+            bool exists = false;
+            for (int i = 0; i < count; i++)
+            {
+                if (toLowerCase(employeeID[i]) == toLowerCase(newID))
+                {
+                    exists = true;
+                    break;
+                }
+            }
+
+            if (exists)
+            {
+                cout << newID << " already exists! Please enter a different ID.\n";
+            }
+            else if (newID.length() != 6 || newID.substr(0, 3) != "EMP" ||
+                     !isdigit(newID[3]) || !isdigit(newID[4]) || !isdigit(newID[5]))
+            {
+                cout << "Invalid ID format! Please enter a valid ID (e.g., EMP001).\n";
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        // 2. Read and validate remaining fields
+        string newName = readNonEmptyLine("Full Name (e.g., Adam Doe): ");
+        string newJobTitle = readNonEmptyLine("Job Title (e.g., Data Analyst): ");
+        string newDepartment = readNonEmptyLine("Department (e.g., Analytics): ");
+        string newGender = readForM("Gender (F/M): ");
+        int newAge = readIntInRange("Age (e.g., 73): ", 18, 100);
+
+        int year = readIntInRange("Hire Year (2000-2026): ", 2000, 2026);
+        int month = readIntInRange("Hire Month (1-12): ", 1, 12);
+        int day = readIntInRange("Hire Day (1-31): ", 1, 31);
+        string newHireDate = to_string(year) + "-" + (month < 10 ? "0" : "") + to_string(month) + "-" + (day < 10 ? "0" : "") + to_string(day);
+
+        double newMonthlySalary = readIntInRange("Monthly Salary (e.g., 5000): ", 1, 1000000);
+
+        // 3. Add the new employee to the arrays
+        employeeID[count] = newID;
+        name[count] = toCapitalize(newName);
+        jobTitle[count] = toCapitalize(newJobTitle);
+        department[count] = toCapitalize(newDepartment);
+        gender[count] = newGender;
+        age[count] = newAge;
+        hireDate[count] = newHireDate;
+        salary[count] = newMonthlySalary;
+        count++;
+
+        // 4. Save the updated list back to employee.txt
+        if (saveEmployees(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count))
+        {
+            printSuccess("Employee added successfully!");
+        }
+    }
+
     // Statistics
-    
-    // Add employee function
+    void statistic(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count){
+
+    }
 
     // Input validation helpers
     int readIntInRange(const string &prompt, int minValue, int maxValue)
@@ -359,6 +448,33 @@ using namespace std;
         return text;
     }
 
+    string readForM(const string &prompt) {
+        while (true) {
+            cout<<prompt;
+            string input;
+            getline(cin, input);
+
+            if (input == "F" || input == "f") return "Female";
+            if (input == "M" || input == "m") return "Male";
+
+            cout<<"Invalid input. Please enter F or M.\n";
+        }
+    }
+
+    // Extra: toCapitalize function (capitalize the first letter of the string) - use to capitalize in the add function
+    string toCapitalize(string text) {
+        text[0] = toupper(text[0]);
+        return text;
+    }
+
+    void printError(const string &msg) {
+        cerr << "[ERROR] " << msg << endl;
+    }
+
+    void printSuccess(const string &msg) {
+        cout << "[SUCCESS] " << msg << endl;
+    }
+
     // ======================MAIN========================
 
     int main () {
@@ -380,7 +496,7 @@ using namespace std;
                  << " 4. Delete Employee\n"
                  << " 5. Employee Statistics\n"
                  << " 6. Exit\n";
-            choice = readIntInRange("Please enter your choice: ", 1, 4);
+            choice = readIntInRange("Please enter your choice: ", 1, 6);
 
             switch (choice)
             {
@@ -403,7 +519,7 @@ using namespace std;
                 cout << "Goodbye!\n";
                 break;
             }
-        } while (choice != 4);
+        } while (choice != 6);
          
         return 0;
     }
