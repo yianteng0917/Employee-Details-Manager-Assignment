@@ -9,6 +9,7 @@ using namespace std;
     const int MAX_EMPLOYEES = 100;
     const int NUM_FIELDS = 8;
     const string EMPLOYEE_FILE = "employee.txt";
+    const string STATS_FILE = "statistics.txt";
     const int TABLE_WIDTH = 114;
 
     bool loadEmployees(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count);
@@ -31,8 +32,8 @@ using namespace std;
     void addEmployee(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count);
 
     // Statistics
-    void statistic(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count);
-
+    void statistic(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count);
+    
     //Input validation helpers
     int readIntInRange(const string &prompt, int minValue, int maxValue);
     string readNonEmptyLine(const string &prompt);
@@ -109,6 +110,19 @@ using namespace std;
                    <<hireDate[i]<<'\t'
                    <<setprecision(10)<<salary[i]<<'\n';
         }
+        outFile.close();
+        return true;
+    }
+
+    bool saveStats(const string &reportContent)
+    {
+        ofstream outFile(STATS_FILE);
+        if (!outFile)
+        {
+            cout << "\nError: Could not open " << STATS_FILE << " for writing\n" << endl;
+            return false;
+        }
+        outFile << reportContent;
         outFile.close();
         return true;
     }
@@ -394,9 +408,19 @@ using namespace std;
     }
 
     // Statistics
-    void statistic(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count){
+    void statistic(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count){
+        
 
+
+        int maleCount = 0, femaleCount = 0;
+        for (int i = 0; i < count; i++) {
+            if (gender[i] == "Male") maleCount++;
+            else if (gender[i] == "Female") femaleCount++;
+        }
+        double malePct = (maleCount/count)/100;
+        double femalePct = (femaleCount/count)/100;
     }
+    
 
     // Input validation helpers
     int readIntInRange(const string &prompt, int minValue, int maxValue)
