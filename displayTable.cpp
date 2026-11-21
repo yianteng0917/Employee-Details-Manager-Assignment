@@ -52,7 +52,7 @@ using namespace std;
     {
         ifstream inFile(EMPLOYEE_FILE);
         if (!inFile) {
-            cout<<"Error: cannot open "<<EMPLOYEE_FILE<<endl;
+            printError("Cannot open " + EMPLOYEE_FILE);
             return false;
         }
 
@@ -95,7 +95,7 @@ using namespace std;
     {
         ofstream outFile(EMPLOYEE_FILE);
         if (!outFile) {
-            cout<<"Error: cannot write to "<<EMPLOYEE_FILE<<endl;
+            printError("Cannot write to " + EMPLOYEE_FILE);
             return false;
         }
 
@@ -147,7 +147,7 @@ using namespace std;
     {
         cout<<"\n======================================== EMPLOYEE TABLE ===================================================\n";
         if (count == 0) {
-            cout<<"No employee records found.\n";
+            printError("No employee records found.");
             return;
         }
 
@@ -213,7 +213,7 @@ using namespace std;
     {
         cout<<"\n=========================SEARCH EMPLOYEE===============================\n";
         if (count == 0) {
-            cout<<"No employee records to search.\n";
+            printError("No employee records to search.");
             return;
         }
 
@@ -221,10 +221,11 @@ using namespace std;
         int matches = searchEmployees(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count, matchIndex);
 
         if (matches == 0) {
-            cout<<"No matching employee found.\n";
+            printError("No matching employee found.");
             return;
         }
 
+        printSuccess(to_string(matches) + " matching employee(s) found.");
         cout<<"\n"<<matches<<" matching employee(s) found:\n";
         printTableHeader();
         for (int m = 0; m < matches; m++)
@@ -252,7 +253,7 @@ using namespace std;
     {
         cout<<"\n=========================DELETE EMPLOYEE============================\n";
         if (count == 0) {
-            cout<<"No employee records to delete.\n";
+            printError("No employee records to delete.");
             return;
         }
 
@@ -261,10 +262,11 @@ using namespace std;
         int matches = searchEmployees(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count, matchIndex);
 
         if (matches == 0) {
-            cout<<"No matching employee found. Noting deleted.\n";
+            printError("No matching employee found. Nothing deleted.");
             return;
         }
 
+        printSuccess(to_string(matches) + " matching employee(s) found.");
         cout<<"\n"<<matches<<" matching employee(s) found:\n";
         cout<<left<<setw(6)<<"Pick";
         printTableHeader();
@@ -281,7 +283,7 @@ using namespace std;
             cout<<"Enter the Pick number to delete one employee, "<<(matches + 1)<<" to delete ALL "<<matches<<" matches, or 0 to cancel.\n";
             pick = readIntInRange("Your choice: ", 0, matches + 1);
             if (pick == 0) {
-                cout<<"Delete cancelled.\n";
+                printError("Delete cancelled.");
                 return;
             }
         }
@@ -294,22 +296,22 @@ using namespace std;
             question = "Delete " + employeeID[matchIndex[pick - 1]] + "("+ name[matchIndex[pick - 1]] + ")? (Y/N): ";
 
             if (!readYesNo(question)) {
-                cout<<"Delete cancelled.\n";
+                printError("Delete cancelled.");
                 return;
             }
 
             if (pick == matches + 1) {
                 for (int m = matches - 1; m>= 0; m--)
                     removeEmployeeAt(matchIndex[m], employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
-                    cout<<matches<<" employee(s) deleted.\n";
+                    printSuccess(to_string(matches) + " employee(s) deleted.");
             } else {
                 removeEmployeeAt(matchIndex[pick - 1], employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
-                cout<<"Employee deleted.\n";
+                printSuccess("Employee deleted.");
             }
 
             // Save the updated list back to employee.txt
             if (saveEmployees(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count))
-                cout<<EMPLOYEE_FILE<<" updated. "<<count<<" employee(s) remaining.\n";
+                printSuccess(string(EMPLOYEE_FILE) + " updated. " + to_string(count) + " employee(s) remaining.");
     }
 
     // Lalitaa'a part
@@ -322,7 +324,7 @@ using namespace std;
 
         if (count >= MAX_EMPLOYEES)
         {
-            cout << "Employee list is full! Cannot enter a new employee.\n\n";
+            printError("Employee list is full! Cannot enter a new employee.");
             return;
         }
 
@@ -350,12 +352,12 @@ using namespace std;
 
             if (exists)
             {
-                cout << newID << " already exists! Please enter a different ID.\n";
+                printError(newID + " already exists! Please enter a different ID.");
             }
             else if (newID.length() != 6 || newID.substr(0, 3) != "EMP" ||
                      !isdigit(newID[3]) || !isdigit(newID[4]) || !isdigit(newID[5]))
             {
-                cout << "Invalid ID format! Please enter a valid ID (e.g., EMP001).\n";
+                printError("Invalid ID format! Please enter a valid ID (e.g., EMP001).");
             }
             else
             {
@@ -401,8 +403,7 @@ using namespace std;
         ofstream outFile(STATS_FILE);
         if (!outFile)
         {
-            cout << "\nError: Could not open " << STATS_FILE << " for writing\n"
-                 << endl;
+            printError("Could not open " + STATS_FILE + " for writing.");
             return false;
         }
         outFile << reportContent;
@@ -420,7 +421,7 @@ using namespace std;
             "=========================================================\n\n";
         if (count == 0)
         {
-            cout << "No employee records available.\n";
+            printError("No employee records available.");
             return;
         }
         int maleCount = 0,
@@ -604,8 +605,8 @@ using namespace std;
 
         report << "\n=========================================================\n\n";
         cout << report.str();    // Prints to terminal
-        saveStats(report.str()); // Saves to statistics.txt
-        printSuccess("Statistics report saved to " + STATS_FILE);
+        if (saveStats(report.str()))
+            printSuccess("Statistics report saved to " + STATS_FILE);
     }
     
     
@@ -624,7 +625,7 @@ using namespace std;
             if (ss >> value && !(ss >> extra) && value >= minValue && value <= maxValue)
                 return value;
 
-            cout<<"Invalid input. Please enter a whole number from "<<minValue<<" to "<<maxValue<<".\n";
+            printError("Invalid input. Please enter a whole number from " + to_string(minValue) + " to " + to_string(maxValue) + ".");
         }
     }
 
@@ -637,7 +638,7 @@ using namespace std;
             if (input.find_first_not_of(" \t") != string::npos)
                 return input.substr(input.find_first_not_of(" \t"));
 
-            cout<<"Input cannot be empty. Please try again.\n";
+            printError("Input cannot be empty. Please try again.");
         }
     }
 
@@ -650,7 +651,7 @@ using namespace std;
             if (input == "Y" || input == "y") return true;
             if (input == "N" || input == "n") return false;
 
-            cout<<"Invalid input. Please enter Y or N.\n";
+            printError("Invalid input. Please enter Y or N.");
         }
     }
 
@@ -669,7 +670,7 @@ using namespace std;
             if (input == "F" || input == "f") return "Female";
             if (input == "M" || input == "m") return "Male";
 
-            cout<<"Invalid input. Please enter F or M.\n";
+            printError("Invalid input. Please enter F or M.");
         }
     }
 
