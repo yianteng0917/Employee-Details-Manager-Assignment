@@ -26,6 +26,12 @@ using namespace std;
     void removeEmployeeAt(int index, string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count);
     void deleteEmployee(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count);
 
+    // Add
+    void addEmployee(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count);
+
+    // Statistics
+    void statistic(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count);
+
     //Input validation helpers
     int readIntInRange(const string &prompt, int minValue, int maxValue);
     string readNonEmptyLine(const string &prompt);
@@ -297,6 +303,12 @@ using namespace std;
                 cout<<EMPLOYEE_FILE<<" updated. "<<count<<" employee(s) remaining.\n";
     }
 
+    // Lalitaa'a part
+
+    // Statistics
+    
+    // Add employee function
+
     // Input validation helpers
     int readIntInRange(const string &prompt, int minValue, int maxValue)
     {
@@ -361,19 +373,36 @@ using namespace std;
 
         int choice;
         do {
-            cout<<"\n========================MAIN MENU==========================\n"
-                <<" 1. Display Table\n"
-                <<" 2. Search Employee\n"
-                <<" 3. Delete Employee\n"
-                <<" 4. Exit\n";
-                choice = readIntInRange("Please enter your choice: ", 1, 4);
+            cout << "\n========================MAIN MENU==========================\n"
+                 << " 1. Display Table\n"
+                 << " 2. Search Employee\n"
+                 << " 3. Add Employee\n"
+                 << " 4. Delete Employee\n"
+                 << " 5. Employee Statistics\n"
+                 << " 6. Exit\n";
+            choice = readIntInRange("Please enter your choice: ", 1, 4);
 
-                switch (choice) {
-                    case 1: displayTable(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);break;
-                    case 2: searchMenu(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);break;
-                    case 3: deleteEmployee(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);break;
-                    case 4: cout<<"Goodbye!\n";break;
-                }
+            switch (choice)
+            {
+            case 1:
+                displayTable(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
+                break;
+            case 2:
+                searchMenu(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
+                break;
+            case 3:
+                addEmployee(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
+                break;
+            case 4:
+                deleteEmployee(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
+                break;
+            case 5:
+                statistic(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
+                break;
+            case 6:
+                cout << "Goodbye!\n";
+                break;
+            }
         } while (choice != 4);
          
         return 0;
