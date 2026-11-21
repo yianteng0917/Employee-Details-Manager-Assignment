@@ -33,7 +33,8 @@ using namespace std;
 
     // Statistics
     void statistic(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count);
-    
+    bool saveStats(const string &reportContent);
+
     //Input validation helpers
     int readIntInRange(const string &prompt, int minValue, int maxValue);
     string readNonEmptyLine(const string &prompt);
@@ -110,19 +111,6 @@ using namespace std;
                    <<hireDate[i]<<'\t'
                    <<setprecision(10)<<salary[i]<<'\n';
         }
-        outFile.close();
-        return true;
-    }
-
-    bool saveStats(const string &reportContent)
-    {
-        ofstream outFile(STATS_FILE);
-        if (!outFile)
-        {
-            cout << "\nError: Could not open " << STATS_FILE << " for writing\n" << endl;
-            return false;
-        }
-        outFile << reportContent;
         outFile.close();
         return true;
     }
@@ -408,18 +396,218 @@ using namespace std;
     }
 
     // Statistics
+    bool saveStats(const string &reportContent)
+    {
+        ofstream outFile(STATS_FILE);
+        if (!outFile)
+        {
+            cout << "\nError: Could not open " << STATS_FILE << " for writing\n"
+                 << endl;
+            return false;
+        }
+        outFile << reportContent;
+        outFile.close();
+        return true;
+    }
+
     void statistic(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count){
-        
+        stringstream report; // string.s object that saves all outputs/input in a temp place to be used in one go
+        report << fixed << setprecision(2);
+        // Sends text into a string variable in RAM instead of the screen or a file.
+        cout << endl; // for looks
+        report << "=========================================================\n "
+            << setw(41) << "COMPANY EMPLOYEE STATISTICS" << "\n"
+            "=========================================================\n\n";
+        if (count == 0)
+        {
+            cout << "No employee records available.\n";
+            return;
+        }
+        int maleCount = 0,
+            femaleCount = 0;
+        int highest[3] = {0}, lowest[3] = {0}; // array to keep the position of highest and lowest ppl 
 
+        string deptNames[MAX_EMPLOYEES]; 
+        int deptCounts[MAX_EMPLOYEES] = {0};
+        int uniqueDepts = 0; //number of different departments
 
-        int maleCount = 0, femaleCount = 0;
-        for (int i = 0; i < count; i++) {
+        int countJoinedAfter2022 = 0;
+
+        int sal5000_7500 = 0, sal7501_9500 = 0, sal9501_10000 = 0, salAbove10000 = 0;
+        int age20_30 = 0, age31_40 = 0, ageAbove40 = 0;
+
+        for (int i = 0; i < count; i++)
+        { // skims through every employee in the file file
+            // 1. GENDER PERCENTAGE
             if (gender[i] == "Male") maleCount++;
             else if (gender[i] == "Female") femaleCount++;
+
+            int foundIndex = -1; // -1 means "not on our sheet yet"
+            //Check existing departments on our attendance sheet
+            for (int d = 0; d < uniqueDepts; d++){
+                if (toLowerCase(deptNames[d]) == toLowerCase(department[i])){
+                    foundIndex = d; // Found it at row d!
+                    break;
+                }
+            }
+            // Update count or add a new department row
+            if (foundIndex != -1){
+                deptCounts[foundIndex]++; // Already exists -> add 1 to its count
+            }
+            else{
+                deptNames[uniqueDepts] = department[i]; // New -> write it down
+                deptCounts[uniqueDepts] = 1;            // Start its count at 1
+                uniqueDepts++;                          // Total unique departments + 1
+            }
+            if (hireDate[i] > "2022-01-01")
+            {
+                countJoinedAfter2022++;
+            }
+            //histogram
+            if (salary[i] >= 5000 && salary[i] <= 7500) sal5000_7500++;
+            else if (salary[i] > 7500 && salary[i] <= 9500) sal7501_9500++;
+            else if (salary[i] > 9500 && salary[i] <= 10000) sal9501_10000++;
+            else if (salary[i] > 10000) salAbove10000++;
+
+            if (age[i] >= 20 && age[i] <= 30) age20_30++;
+            else if (age[i] >= 31 && age[i] <= 40) age31_40++;
+            else if (age[i] > 40) ageAbove40++;
+            
         }
-        double malePct = (maleCount/count)/100;
-        double femalePct = (femaleCount/count)/100;
+        // [2 & 3]. TOP 3 MONTHLY SALARIES
+        bool picked[MAX_EMPLOYEES] = {false};
+        for (int k = 0; k < 3 && k < count; k++)
+        {
+            int bestIdx = -1;
+            for (int i = 0; i < count; i++){
+                if (picked[i])
+                    continue;
+                if (bestIdx == -1 || salary[i] > salary[bestIdx]){
+                    bestIdx = i;
+                }
+            }
+            highest[k] = bestIdx;
+            picked[bestIdx] = true;
+        }
+        // [2 & 3]. BOTTOM 3 MONTHLY SALARIES
+        for (int i = 0; i < count; i++)
+            picked[i] = false; // Reset checklist!
+        for (int k = 0; k < 3 && k < count; k++)
+        {
+            int lowIdx = -1;
+            for (int i = 0; i < count; i++)
+            {
+                if (picked[i])
+                    continue;
+                if (lowIdx == -1 || salary[i] < salary[lowIdx])
+                {
+                    lowIdx = i;
+                }
+            }
+            lowest[k] = lowIdx;
+            picked[lowIdx] = true;
+        }
+        
+        // calculations
+        double malePct = ((double)maleCount/count)*100.0;
+        double femalePct = ((double)femaleCount/count)*100.0;
+
+        // --- OUTPUT FORMATTING ---
+        report << "---------------------------------------------------------\n"
+               << "  [1] GENDER BREAKDOWN\n"
+               << "---------------------------------------------------------\n";
+        report << left << setw(12) << "  Male:" << maleCount << " (" << malePct << "%)\n";
+        report << left << setw(12) << "  Female:" << femaleCount << " (" << femalePct << "%)\n\n";
+
+        report << "---------------------------------------------------------\n"
+               << "  [2] HIGHEST & LOWEST MONTHLY SALARY\n"
+               << "---------------------------------------------------------\n";
+        report << left << setw(12) << "  Highest:"
+               << setw(7) << employeeID[highest[0]] << " | "
+               << setw(18) << name[highest[0]] << " | "
+               << setw(26) << jobTitle[highest[0]] << " | "
+               << setw(7) << gender[highest[0]] << " | RM "
+               << right << setw(8) << salary[highest[0]] << "\n";
+
+        report << left << setw(12) << "  Lowest:"
+               << setw(7) << employeeID[lowest[0]] << " | "
+               << setw(18) << name[lowest[0]] << " | "
+               << setw(26) << jobTitle[lowest[0]] << " | "
+               << setw(7) << gender[lowest[0]] << " | RM "
+               << right << setw(8) << salary[lowest[0]] << "\n\n";
+
+        report << "---------------------------------------------------------\n"
+               << "  [3] TOP 3 AND BOTTOM 3 MONTHLY SALARIES\n"
+               << "---------------------------------------------------------\n";
+        report << "  Top 3:\n";
+        for (int i = 0; i < 3 && i < count; i++)
+        {
+            report << "  " << left << i + 1 << setw(3) << "."
+                   << setw(7) << employeeID[highest[i]] << " | "
+                   << setw(18) << name[highest[i]] << " | "
+                   << setw(26) << jobTitle[highest[i]] << " | "
+                   << setw(7) << gender[highest[i]] << " | RM "
+                   << right << setw(8) << salary[highest[i]] << "\n";
+        }
+        report << "\n  Bottom 3:\n";
+        for (int i = 0; i < 3 && i < count; i++)
+        {
+            report << "  " << left << i + 1 << setw(3) << "."
+                   << setw(7) << employeeID[lowest[i]] << " | "
+                   << setw(18) << name[lowest[i]] << " | "
+                   << setw(26) << jobTitle[lowest[i]] << " | "
+                   << setw(7) << gender[lowest[i]] << " | RM "
+                   << right << setw(8) << salary[lowest[i]] << "\n";
+        }
+        report << "\n";
+
+        report << "---------------------------------------------------------\n"
+               << "  [4] EMPLOYEES BY DEPARTMENT\n"
+               << "---------------------------------------------------------\n";
+        report << "  " << left << setw(20) << "Department"
+               << right << setw(16) << "No of Employees"
+               << setw(14) << "Percentage" << "\n";
+        report << "  ---------------------------------------------------\n";
+        for (int i = 0; i < uniqueDepts; i++)
+        {
+            report << "  " << left << setw(20) << deptNames[i]
+                   << right << setw(16) << deptCounts[i]
+                   << setw(13) << ((double)deptCounts[i] / count) * 100.0 << "%\n";
+        }
+        report << "  ---------------------------------------------------\n";
+        report << "  " << left << setw(20) << "TOTAL"
+               << right << setw(16) << count
+               << setw(13) << 100.00 << "%\n\n";
+
+        report << "---------------------------------------------------------\n"
+               << "  [5] EMPLOYEES JOINED AFTER 1ST JAN 2022\n"
+               << "---------------------------------------------------------\n";
+        report << left << setw(25) << "  Number of Employees:" << countJoinedAfter2022 << "\n";
+        report << left << setw(25) << "  Percentage (%):" << ((double)countJoinedAfter2022 / count) * 100.0 << "%\n\n";
+
+        report << "---------------------------------------------------------\n"
+               << "  [6] HISTOGRAMS\n"
+               << "---------------------------------------------------------\n";
+        report << "  1. Monthly Salary Distribution\n";
+        report << right << setw(24) << "RM 5,000 - RM 7,500" << " | " << left << string(sal5000_7500, '*') << " (" << sal5000_7500 << ")\n";
+        report << right << setw(24) << "RM 7,501 - RM 9,500" << " | " << left << string(sal7501_9500, '*') << " (" << sal7501_9500 << ")\n";
+        report << right << setw(24) << "Above RM 10,000" << " | " << left << string(salAbove10000, '*') << " (" << salAbove10000 << ")\n\n";
+
+        report << "  2. Gender Distribution\n";
+        report << right << setw(24) << "Male" << " | " << left << string(maleCount, '*') << " (" << maleCount << ")\n";
+        report << right << setw(24) << "Female" << " | " << left << string(femaleCount, '*') << " (" << femaleCount << ")\n\n";
+
+        report << "  3. Age Distribution\n";
+        report << right << setw(24) << "20 - 30" << " | " << left << string(age20_30, '*') << " (" << age20_30 << ")\n";
+        report << right << setw(24) << "31 - 40" << " | " << left << string(age31_40, '*') << " (" << age31_40 << ")\n";
+        report << right << setw(24) << "Above 40" << " | " << left << string(ageAbove40, '*') << " (" << ageAbove40 << ")\n";
+
+        report << "\n=========================================================\n\n";
+        cout << report.str();    // Prints to terminal
+        saveStats(report.str()); // Saves to statistics.txt
+        printSuccess("Statistics report saved to " + STATS_FILE);
     }
+    
     
 
     // Input validation helpers
@@ -492,11 +680,11 @@ using namespace std;
     }
 
     void printError(const string &msg) {
-        cerr << "[ERROR] " << msg << endl;
+        cerr << "\033[31m[ERROR] " << msg << "\033[0m" << endl;
     }
 
     void printSuccess(const string &msg) {
-        cout << "[SUCCESS] " << msg << endl;
+        cout << "\033[32m[SUCCESS] " << msg << "\033[0m" << endl;
     }
 
     // ======================MAIN========================

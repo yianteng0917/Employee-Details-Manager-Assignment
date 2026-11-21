@@ -1,0 +1,76 @@
+=========================================================
+               COMPANY EMPLOYEE STATISTICS
+=========================================================
+
+---------------------------------------------------------
+  [1] GENDER BREAKDOWN
+---------------------------------------------------------
+  Male:     25 (50.00%)
+  Female:   25 (50.00%)
+
+---------------------------------------------------------
+  [2] HIGHEST & LOWEST MONTHLY SALARY
+---------------------------------------------------------
+  Highest:  EMP014  | Ethan Clark        | Legal Counsel              | Male    | RM 12500.00
+  Lowest:   EMP040  | Gabriel Collins    | Support Specialist         | Male    | RM  5200.00
+
+---------------------------------------------------------
+  [3] TOP 3 AND BOTTOM 3 MONTHLY SALARIES
+---------------------------------------------------------
+  Top 3:
+  1.  EMP014  | Ethan Clark        | Legal Counsel              | Male    | RM 12500.00
+  2.  EMP030  | Sebastian Lim      | Solutions Architect        | Male    | RM 12000.00
+  3.  EMP044  | Ryan Rogers        | Risk Manager               | Male    | RM 11800.00
+
+  Bottom 3:
+  1.  EMP040  | Gabriel Collins    | Support Specialist         | Male    | RM  5200.00
+  2.  EMP009  | Sofia Garcia       | Customer Success Manager   | Female  | RM  5500.00
+  3.  EMP029  | Zoey Nelson        | Social Media Manager       | Female  | RM  5600.00
+
+---------------------------------------------------------
+  [4] EMPLOYEES BY DEPARTMENT
+---------------------------------------------------------
+  Department           No of Employees    Percentage
+  ---------------------------------------------------
+  Engineering                        9        18.00%
+  Product                            1         2.00%
+  Design                             4         8.00%
+  Analytics                          3         6.00%
+  Human Resources                    3         6.00%
+  Finance                            4         8.00%
+  Marketing                          7        14.00%
+  Support                            2         4.00%
+  Sales                              3         6.00%
+  Legal                              2         4.00%
+  Administration                     3         6.00%
+  IT                                 5        10.00%
+  R&D                                2         4.00%
+  Operations                         2         4.00%
+  ---------------------------------------------------
+  TOTAL                             50       100.00%
+
+---------------------------------------------------------
+  [5] EMPLOYEES JOINED AFTER 1ST JAN 2022
+---------------------------------------------------------
+  Number of Employees:   18
+  Percentage (%):        36.00%
+
+---------------------------------------------------------
+  [6] HISTOGRAMS
+---------------------------------------------------------
+  1. Monthly Salary Distribution
+     RM 5,000 - RM 7,500 | *************************** (27)
+     RM 7,501 - RM 9,500 | ************** (14)
+         Above RM 10,000 | ******* (7)
+
+  2. Gender Distribution
+                    Male | ************************* (25)
+                  Female | ************************* (25)
+
+  3. Age Distribution
+                 20 - 30 | ***************** (17)
+                 31 - 40 | ************************* (25)
+                Above 40 | ******** (8)
+
+=========================================================
+
