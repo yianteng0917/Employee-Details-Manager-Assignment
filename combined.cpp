@@ -150,7 +150,7 @@ using namespace std;
 
     void displayTable(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count)
     {
-        cout<<"\n======================================== EMPLOYEE TABLE ===================================================\n";
+        cout<<"\n=========================================== EMPLOYEE TABLE ======================================================\n";
         if (count == 0) {
             printError("No employee records found.");
             return;
@@ -680,14 +680,14 @@ int selected = matchIndex[pick - 1];
         report << "---------------------------------------------------------\n"
                << "  [2] HIGHEST & LOWEST MONTHLY SALARY\n"
                << "---------------------------------------------------------\n";
-        report << left << setw(12) << " Employee with Highest Salary:"
+        report << left << setw(32) << " Employee with Highest Salary:"
                << setw(7) << employeeID[highest[0]] << " | "
                << setw(18) << name[highest[0]] << " | "
                << setw(26) << jobTitle[highest[0]] << " | "
                << setw(7) << gender[highest[0]] << " | RM "
                << right << setw(8) << salary[highest[0]] << "\n";
 
-        report << left << setw(12) << " Employee with Lowest Salary:"
+        report << left << setw(32) << " Employee with Lowest Salary:"
                << setw(7) << employeeID[lowest[0]] << " | "
                << setw(18) << name[lowest[0]] << " | "
                << setw(26) << jobTitle[lowest[0]] << " | "
@@ -859,15 +859,15 @@ int selected = matchIndex[pick - 1];
 
         int choice;
         do {
-            cout << "\n========================MAIN MENU==========================\n"
+            cout << "\e[1m\n========================MAIN MENU==========================\n"
                  << " 1. Display Table\n"
                  << " 2. Search Employee\n"
                  << " 3. Add Employee\n"
                  << " 4. Delete Employee\n"
                  << " 5. Update Employee\n"
                  << " 6. Employee Statistics\n"
-                 << " 7. Exit\n";
-            choice = readIntInRange("Please enter your choice: ", 1, 7);
+                 << " 7. Exit\n\e[0m";
+            choice = readIntInRange("\033[34mPlease enter your choice: \033[0m", 1, 7);
 
             switch (choice)
             {
@@ -890,7 +890,7 @@ int selected = matchIndex[pick - 1];
                 statistic(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
                 break;
             case 7:
-                cout << "Goodbye!\n";
+                cout << "\033[32mGoodbye!\033[0m\n"; //the random letters and numbers is to make the text green
                 break;
             }
         } while (choice != 7);

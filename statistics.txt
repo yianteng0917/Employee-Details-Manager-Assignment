@@ -11,8 +11,8 @@
 ---------------------------------------------------------
   [2] HIGHEST & LOWEST MONTHLY SALARY
 ---------------------------------------------------------
-  Highest:  EMP014  | Ethan Clark        | Legal Counsel              | Male    | RM 12500.00
-  Lowest:   EMP040  | Gabriel Collins    | Support Specialist         | Male    | RM  5200.00
+ Employee with Highest Salary:  EMP014  | Ethan Clark        | Legal Counsel              | Male    | RM 12500.00
+ Employee with Lowest Salary:   EMP040  | Gabriel Collins    | Support Specialist         | Male    | RM  5200.00
 
 ---------------------------------------------------------
   [3] TOP 3 AND BOTTOM 3 MONTHLY SALARIES
@@ -58,6 +58,8 @@
 ---------------------------------------------------------
   [6] HISTOGRAMS
 ---------------------------------------------------------
+  Note: Each '*' represents 1 employee.
+
   1. Monthly Salary Distribution
      RM 5,000 - RM 7,500 | *************************** (27)
      RM 7,501 - RM 9,500 | ************** (14)
