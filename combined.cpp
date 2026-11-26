@@ -1,3 +1,10 @@
+// Members and Contribution:
+// 1. Lalitaa Tripurasundari A/P Tiagrajah : Add Employee, Search Employee, Department Statistics, Salary Histogram, Gender Statistics, Gender Histogram
+// 2. Irine Wong Yien Hui : Display Employee Table, Delete Employee, Display Main Menu, Save Employee, Age Histogram
+// 3. Foo Yian Teng :Load Employee, Update Employee, Average Salary by Department, Highest/Lowest Salary, Joined-After Statistics, Top 3 and Bottom 3 Monthly Salaries
+
+
+// SECTION 1: HEADER FILES AND GLOBAL CONSTANTS USED
 #include<iostream>
 #include <cctype>
 #include<fstream>
@@ -6,8 +13,7 @@
 #include<iomanip>
 using namespace std;
 
-    //Global constants used throughout program
-    const int MAX_EMPLOYEES = 100;
+    const int MAX_EMPLOYEES = 100;                 
     const int NUM_FIELDS = 8;
     const string EMPLOYEE_FILE = "employee.txt";
     const string STATS_FILE = "statistics.txt";
@@ -16,30 +22,32 @@ using namespace std;
     bool loadEmployees(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count);
     bool saveEmployees(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count);
 
-    //Display Function
+
+// SECTION 2: FUNCTION DECLARATIONS
+    //Display Function (Member: Irine Wong Yien Hui)
     void printTableHeader();
     void printEmployeeRow(int i, const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[]);
     void displayTable(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count);
 
-    //Search Function
+    //Search Function (Member: Irine Wong Yien Hui)
     int searchEmployees(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count, int matchIndex[]);
     void searchMenu(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count);
 
-    //Delete Function
+    //Delete Function (Member: Irine Wong Yien Hui)
     void removeEmployeeAt(int index, string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count);
     void deleteEmployee(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count);
 
-    // Add Function
+    //Add Function (Member: Lalitaa Tripurasundari A/P Tiagrajah)
     void addEmployee(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count);
 
-    // Update Function
+    //Update Function (Member: Foo Yian Teng)
     void updateEmployee(string employeeID[], string name[], string jobTitle[], string department[], string gender[],int age[],string hireDate[],double salary[],int count);
 
-    // Statistics
+    //Statistics Section(Member: Lalitaa Tripurasundari A/P Tiagrajah, Irine Wong Yien Hui, Foo Yian Teng)
     void statistic(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count);
     bool saveStats(const string &reportContent);
 
-    //Input validation helpers
+    //Input validation & string helpers
     int readIntInRange(const string &prompt, int minValue, int maxValue);
     string readNonEmptyLine(const string &prompt);
     bool readYesNo(const string &prompt);
@@ -47,12 +55,14 @@ using namespace std;
     string readForM(const string &prompt);
     string toCapitalize(string text);
 
-    // Error handling
+    // Error & Success Message Helpers
     void printError(const string &msg);
     void printSuccess(const string &msg);
 
+// SECTION 3: OPENING EMPLOYEE FILE AND READING DATA INTO ARRAYS
+    // Load Employee (Member: Foo Yian Teng)
+    // Returns true if successful, false if file cannot be opened
     bool loadEmployees(string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count)
-
     {
         ifstream inFile(EMPLOYEE_FILE);
         if (!inFile) {
@@ -95,6 +105,8 @@ using namespace std;
         return true;
     }
 
+    // Save Employee (Member: Irine Wong Yien Hui)
+    // Returns true if successful, false if file cannot be opened
     bool saveEmployees(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count)
     {
         ofstream outFile(EMPLOYEE_FILE);
@@ -119,7 +131,8 @@ using namespace std;
         return true;
     }
 
-    //Employee Table Display
+// SECTION 4: DISPLAY MENU AND FUNCTIONS
+    //Employee Table Display (Member: Irine Wong Yien Hui)
     void printTableHeader() {
         cout<< left
             << setw(4)  <<"No."
@@ -163,7 +176,7 @@ using namespace std;
         cout<< "Total employees: "<<count<<endl;
     }
 
-     //Search Menu
+     //Search Menu (Member: Lalitaa Tripurasundari A/P Tiagrajah)
     int searchEmployees(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count, int matchIndex[])
     {
         cout<<"\nSearch by:\n"
@@ -251,7 +264,7 @@ using namespace std;
             cout<<string(TABLE_WIDTH, '-')<<endl;
     }
 
-    // Delete Function
+    // Delete Function (Member: Irine Wong Yien Hui)
     void removeEmployeeAt(int index, string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[], int &count) 
     {
         for (int i = index; i < count - 1; i++) {
@@ -336,58 +349,58 @@ using namespace std;
                 printSuccess(string(EMPLOYEE_FILE) + " updated. " + to_string(count) + " employee(s) remaining.");
     }
    
-    // Update Function
-   void updateEmployee(
-   string employeeID[], string name[], string jobTitle[], string department[], string gender[],int age[],string hireDate[], double salary[],int count)
+    // Update Function (Member: Foo Yian Teng)
+        void updateEmployee(
+        string employeeID[], string name[], string jobTitle[], string department[], string gender[],int age[],string hireDate[], double salary[],int count)
 {
     cout << "\n=========================UPDATE EMPLOYEE============================\n";
-//1. Checks if there are any employee records to update
-    if (count == 0)
-    {
-        printError("No employee records to update.");
-        return;
-    }
-//2. Search for matching employees
-    int matchIndex[MAX_EMPLOYEES];
+        //Checks if there are any employee records to update
+         if (count == 0)
+        {
+            printError("No employee records to update.");
+            return;
+        }
+        //Search for matching employees
+        int matchIndex[MAX_EMPLOYEES];
 
-    int matches = searchEmployees(
-        employeeID,
-        name,
-        jobTitle,
-        department,
-        gender,
-        age,
-        hireDate,
-        salary,
-        count,
-        matchIndex
-    );
-    // User selected Cancel from the search menu
-    if (matches == -1)
-    {
-    return;
-    }
-//3. Exit if no matching employees are found
-    if (matches == 0)
-    {
-        printError("No matching employee found.");
-        return;
-    }
+        int matches = searchEmployees(
+            employeeID,
+            name,
+            jobTitle,
+            department,
+            gender,
+            age,
+            hireDate,
+            salary,
+            count,
+            matchIndex
+            );
+
+        //User selected Cancel from the search menu
+        if (matches == -1)
+         {
+            return;
+            }
+        //Exit if no matching employees are found
+        if (matches == 0)
+        {
+            printError("No matching employee found.");
+            return;
+        }
 
     
-//4. Display the matching employees 
-    printSuccess(to_string(matches) + " matching employee(s) found.");
+        //Display the matching employees 
+        printSuccess(to_string(matches) + " matching employee(s) found.");
+        cout << "\n" << matches << " matching employee(s) found:\n";
 
-    cout << "\n" << matches << " matching employee(s) found:\n";
+        cout << left << setw(6) << "Pick";
+        printTableHeader();
 
-cout << left << setw(6) << "Pick";
-printTableHeader();
-
-//5. Display the matching employees and employee details
-for (int m = 0; m < matches; m++)
-{
-    cout << left << setw(6) << (m + 1);
-    printEmployeeRow(
+        //Display the matching employees and employee details
+        for (int m = 0; m < matches; m++)
+        {
+        cout << left << setw(6) << (m + 1);
+        printEmployeeRow(
         matchIndex[m],
         employeeID,
         name,
@@ -397,13 +410,12 @@ for (int m = 0; m < matches; m++)
         age,
         hireDate,
         salary
-    );
-}
+        );
+        }
 
-//6. Seperates table and user input
 cout << string(TABLE_WIDTH, '-') << endl;
 
-//7. User selects employee to update
+// User selects employee to update
 int pick;
 
 if (matches == 1)
@@ -419,7 +431,7 @@ else{
 
 int selected = matchIndex[pick - 1];
 
-//8. Display update options
+// Display update options
     cout << "\n===== UPDATE EMPLOYEE =====\n"
          << "1. Update Job Title\n"
          << "2. Update Department\n"
@@ -457,7 +469,7 @@ int selected = matchIndex[pick - 1];
             printError("Update cancelled.");
             return;
     }
-//9. Save the updated employee information back to employee.txt
+//Save the updated employee information back to employee.txt
     if (saveEmployees(
             employeeID,
             name,
@@ -473,7 +485,7 @@ int selected = matchIndex[pick - 1];
     }
 }
 
-    // Add Function
+    // Add Function (Member: Lalitaa Tripurasundari A/P Tiagrajah)
     void addEmployee(string employeeID[], string name[], string jobTitle[], string department[],
                      string gender[], int age[], string hireDate[], double salary[], int &count)
     {
@@ -487,7 +499,8 @@ int selected = matchIndex[pick - 1];
 
         cout << "Please enter the following details for the new employee:\n";
 
-        // 1. Validate unique Employee ID (Format: EMP001)
+        //Validate unique Employee ID 
+        //Format: EMP001; inputs that don't match the format will be rejected with a Error message
         string newID;
         while (true)
         {
@@ -522,7 +535,7 @@ int selected = matchIndex[pick - 1];
             }
         }
 
-        // 2. Read and validate remaining fields
+        //Read and validate remaining fields
         string newName = readNonEmptyLine("Full Name (e.g., Adam Doe): ");
         string newJobTitle = readNonEmptyLine("Job Title (e.g., Data Analyst): ");
         string newDepartment = readNonEmptyLine("Department (e.g., Analytics): ");
@@ -536,7 +549,7 @@ int selected = matchIndex[pick - 1];
 
         double newMonthlySalary = readIntInRange("Monthly Salary (e.g., 5000): ", 1, 1000000);
 
-        // 3. Add the new employee to the arrays
+        //Add the new employee to the arrays
         employeeID[count] = newID;
         name[count] = toCapitalize(newName);
         jobTitle[count] = toCapitalize(newJobTitle);
@@ -547,14 +560,14 @@ int selected = matchIndex[pick - 1];
         salary[count] = newMonthlySalary;
         count++;
 
-        // 4. Save the updated list back to employee.txt
+        //Save the updated list back to employee.txt
         if (saveEmployees(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count))
         {
             printSuccess("Employee added successfully!");
         }
     }
 
-    // Statistics
+    // SECTION 5: STATISTICS FUNCTIONS
     bool saveStats(const string &reportContent)
     {
         ofstream outFile(STATS_FILE);
@@ -581,6 +594,7 @@ int selected = matchIndex[pick - 1];
             printError("No employee records available.");
             return;
         }
+
         int maleCount = 0,
             femaleCount = 0;
         int highest[3] = {0}, lowest[3] = {0}; // array to keep the position of highest and lowest ppl 
@@ -596,7 +610,7 @@ int selected = matchIndex[pick - 1];
 
         for (int i = 0; i < count; i++)
         { // skims through every employee in the file file
-            // 1. GENDER PERCENTAGE
+            // GENDER PERCENTAGE
             if (gender[i] == "Male") maleCount++;
             else if (gender[i] == "Female") femaleCount++;
 
@@ -621,7 +635,7 @@ int selected = matchIndex[pick - 1];
             {
                 countJoinedAfter2022++;
             }
-            //histogram
+    
             if (salary[i] >= 5000 && salary[i] <= 7500) sal5000_7500++;
             else if (salary[i] > 7500 && salary[i] <= 9500) sal7501_9500++;
             else if (salary[i] > 9500 && salary[i] <= 10000) sal9501_10000++;
@@ -632,7 +646,7 @@ int selected = matchIndex[pick - 1];
             else if (age[i] > 40) ageAbove40++;
             
         }
-        // [2 & 3]. TOP 3 MONTHLY SALARIES
+   
         bool picked[MAX_EMPLOYEES] = {false};
         for (int k = 0; k < 3 && k < count; k++)
         {
@@ -647,7 +661,7 @@ int selected = matchIndex[pick - 1];
             highest[k] = bestIdx;
             picked[bestIdx] = true;
         }
-        // [2 & 3]. BOTTOM 3 MONTHLY SALARIES
+    
         for (int i = 0; i < count; i++)
             picked[i] = false; // Reset checklist!
         for (int k = 0; k < 3 && k < count; k++)
@@ -670,7 +684,7 @@ int selected = matchIndex[pick - 1];
         double malePct = ((double)maleCount/count)*100.0;
         double femalePct = ((double)femaleCount/count)*100.0;
 
-        // --- OUTPUT FORMATTING ---
+    // FINAL OUTPUT FORMATTING 
         report << "---------------------------------------------------------\n"
                << "  [1] GENDER BREAKDOWN\n"
                << "---------------------------------------------------------\n";
@@ -846,7 +860,7 @@ int selected = matchIndex[pick - 1];
         cout << "\033[32m[SUCCESS] " << msg << "\033[0m" << endl;
     }
 
-    // MAIN MENU
+//SECTION 6: DISPLAY MAIN MENU (Member: Irine Wong Yien Hui) 
     int main () {
         string employeeID[MAX_EMPLOYEES], name[MAX_EMPLOYEES], jobTitle[MAX_EMPLOYEES];
         string department[MAX_EMPLOYEES], gender[MAX_EMPLOYEES], hireDate[MAX_EMPLOYEES];
