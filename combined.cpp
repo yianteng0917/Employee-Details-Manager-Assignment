@@ -176,7 +176,7 @@ using namespace std;
         cout<< "Total employees: "<<count<<endl;
     }
 
-     //Search Menu (Member: Lalitaa Tripurasundari A/P Tiagrajah)
+    // Search Menu (Member: Lalitaa Tripurasundari A/P Tiagrajah)
     int searchEmployees(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count, int matchIndex[])
     {
         cout<<"\nSearch by:\n"
@@ -568,10 +568,12 @@ int selected = matchIndex[pick - 1];
     }
 
     // SECTION 5: STATISTICS FUNCTIONS
-    bool saveStats(const string &reportContent)
-    {
+
+    //SAVE IN "statistics.txt" FILE
+    bool saveStats(const string &reportContent) // save all content stored in reportContent file stream
+    { 
         ofstream outFile(STATS_FILE);
-        if (!outFile)
+        if (!outFile) // error msg if file fail to open
         {
             printError("Could not open " + STATS_FILE + " for writing.");
             return false;
@@ -582,38 +584,44 @@ int selected = matchIndex[pick - 1];
     }
 
     void statistic(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count){
-        stringstream report; // string.s object that saves all outputs/input in a temp place to be used in one go
-        report << fixed << setprecision(2);
-        // Sends text into a string variable in RAM instead of the screen or a file.
-        cout << endl; // for looks
+        stringstream report; // string.s object that saves all outputs/input in a temp place to be used in one go (Sends text into a string variable in RAM instead of the screen or a file.)
+        report << fixed << setprecision(2); // all number outputs in 2 sf
+
+        cout << endl; 
         report << "=========================================================\n "
             << setw(41) << "COMPANY EMPLOYEE STATISTICS" << "\n"
             "=========================================================\n\n";
-        if (count == 0)
+        if (count == 0) 
         {
             printError("No employee records available.");
             return;
         }
-
+    // DECLERATION OF VARIABLE IN STATS FUNC
+        // Gender
         int maleCount = 0,
             femaleCount = 0;
         int highest[3] = {0}, lowest[3] = {0}; // array to keep the position of highest and lowest ppl 
 
+        // Department
         string deptNames[MAX_EMPLOYEES]; 
         int deptCounts[MAX_EMPLOYEES] = {0};
         int uniqueDepts = 0; //number of different departments
 
+        // Employees joined after 1st Jan 2022
         int countJoinedAfter2022 = 0;
 
+        // Sallary and Age category counting
         int sal5000_7500 = 0, sal7501_9500 = 0, sal9501_10000 = 0, salAbove10000 = 0;
         int age20_30 = 0, age31_40 = 0, ageAbove40 = 0;
 
-        for (int i = 0; i < count; i++)
-        { // skims through every employee in the file file
-            // GENDER PERCENTAGE
+    // MAIN LOOP - skims through every employee
+        for (int i = 0; i < count; i++) { 
+
+    // GENDER PERCENTAGE - LOGIC
             if (gender[i] == "Male") maleCount++;
             else if (gender[i] == "Female") femaleCount++;
 
+    // DEPARTMENT DISTRIBUTION HISTOGRAM - LOGIC
             int foundIndex = -1; // -1 means "not on our sheet yet"
             //Check existing departments on our attendance sheet
             for (int d = 0; d < uniqueDepts; d++){
@@ -635,18 +643,19 @@ int selected = matchIndex[pick - 1];
             {
                 countJoinedAfter2022++;
             }
-    
+            
+    // SALARY DISTRIBUTION HISTOGRAM - LOGIC
             if (salary[i] >= 5000 && salary[i] <= 7500) sal5000_7500++;
             else if (salary[i] > 7500 && salary[i] <= 9500) sal7501_9500++;
             else if (salary[i] > 9500 && salary[i] <= 10000) sal9501_10000++;
             else if (salary[i] > 10000) salAbove10000++;
 
+    // AGE DISTRIBUTION HISTOGRAM - LOGIC
             if (age[i] >= 20 && age[i] <= 30) age20_30++;
             else if (age[i] >= 31 && age[i] <= 40) age31_40++;
-            else if (age[i] > 40) ageAbove40++;
-            
+            else if (age[i] > 40) ageAbove40++;    
         }
-   
+    // T0P 3 EMPLOYEES -LOGIC
         bool picked[MAX_EMPLOYEES] = {false};
         for (int k = 0; k < 3 && k < count; k++)
         {
@@ -661,7 +670,7 @@ int selected = matchIndex[pick - 1];
             highest[k] = bestIdx;
             picked[bestIdx] = true;
         }
-    
+    // BOTTOM 3 EMPLOYEES - LOGIC
         for (int i = 0; i < count; i++)
             picked[i] = false; // Reset checklist!
         for (int k = 0; k < 3 && k < count; k++)
@@ -680,7 +689,7 @@ int selected = matchIndex[pick - 1];
             picked[lowIdx] = true;
         }
         
-        // calculations
+    // TOTAL MALE AND FEMALE PERCENTAGE - LOGIC
         double malePct = ((double)maleCount/count)*100.0;
         double femalePct = ((double)femaleCount/count)*100.0;
 
