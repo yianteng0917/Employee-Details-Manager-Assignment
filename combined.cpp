@@ -2,8 +2,8 @@
 // 1. Lalitaa Tripurasundari A/P Tiagrajah : Add Employee
 //                                           Search Employee
 //                                           Gender Distribution and Gender Percentage (Histogram & Logic)
-//                                           Department Distribution Histogram - Logic
-//                                           Total Male and Female Percentage - Logic
+//                                           Department Distribution Histogram
+//                                           Total Male and Female Percentage
 //                                           Employees by Department (Final Output)
 
 // 2. Irine Wong Yien Hui : Display Employee Table
@@ -1119,16 +1119,15 @@ int selected = matchIndex[pick - 1];
 
         int choice;
         do {
-            cout << "\e[1m\n========================MAIN MENU==========================\n"
-                 << " 1. Display Table\n"
-                 << " 2. Search Employee\n"
-                 << " 3. Add Employee\n"
-                 << " 4. Delete Employee\n"
-                 << " 5. Update Employee\n"
-                 << " 6. Employee Statistics\n"
-                 << " 7. Sort Employees\n"
-                 << " 8. Exit\n\e[0m";
-            choice = readIntInRange("\033[34mPlease enter your choice: \033[0m", 1, 8);
+            cout << "\e[1m\n+------------------------------------------------------+\n"
+                 << "|               EMPLOYEE MANAGEMENT SYSTEM             |\n"
+                 << "+------------------------------------------------------+\n"
+                 << "|  1. Display Table         |  5. Delete Employee      |\n"
+                 << "|  2. Search Employee       |  6. Employee Statistics  |\n"
+                 << "|  3. Add New Employee      |  7. Sort Employees       |\n"
+                 << "|  4. Update Employee       |  8. Exit                 |\n"
+                 << "+------------------------------------------------------+\n\e[0m";
+            choice = readIntInRange("\033[36mPlease enter your choice (1-8): \033[0m", 1, 8);
 
             switch (choice)
             {
@@ -1142,10 +1141,10 @@ int selected = matchIndex[pick - 1];
                 addEmployee(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
                 break;
             case 4:
-                deleteEmployee(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
+                updateEmployee(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
                 break;
             case 5:
-                updateEmployee(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
+                deleteEmployee(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
                 break;
             case 6:
                 statistic(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
