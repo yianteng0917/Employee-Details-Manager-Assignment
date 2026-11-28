@@ -1,6 +1,6 @@
 // Members and Contribution:
 // 1. Lalitaa Tripurasundari A/P Tiagrajah : Add Employee, Search Employee, Department Statistics, Salary Histogram, Gender Statistics, Gender Histogram
-// 2. Irine Wong Yien Hui : Display Employee Table, Delete Employee, Display Main Menu, Save Employee, Age Histogram
+// 2. Irine Wong Yien Hui : Display Employee Table, Delete Employee, Display Main Menu, Save Employee, Age Histogram, Sort Employee
 // 3. Foo Yian Teng :Load Employee, Update Employee, Average Salary by Department, Highest/Lowest Salary, Joined-After Statistics, Top 3 and Bottom 3 Monthly Salaries
 
 
@@ -46,6 +46,11 @@ using namespace std;
     //Statistics Section(Member: Lalitaa Tripurasundari A/P Tiagrajah, Irine Wong Yien Hui, Foo Yian Teng)
     void statistic(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count);
     bool saveStats(const string &reportContent);
+
+    //Sort Function (Member: Irine Wong Yien Hui)
+    void swapEmployees(int a, int b, string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[]);
+    bool comesBefore(int a, int b, int field, bool ascending, const string name[], const int age[], const string hireDate[], const double salary[]);
+    void sortMenu(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count);
 
     //Input validation & string helpers
     int readIntInRange(const string &prompt, int minValue, int maxValue);
@@ -792,6 +797,87 @@ int selected = matchIndex[pick - 1];
     
     
 
+    // SECTION 6: SORT FUNCTION (Member: Irine Wong Yien Hui)
+    // Swaps two employees (all 8 parallel arrays) at positions a and b
+    void swapEmployees(int a, int b, string employeeID[], string name[], string jobTitle[], string department[], string gender[], int age[], string hireDate[], double salary[])
+    {
+        swap(employeeID[a], employeeID[b]);
+        swap(name[a],       name[b]);
+        swap(jobTitle[a],   jobTitle[b]);
+        swap(department[a], department[b]);
+        swap(gender[a],     gender[b]);
+        swap(age[a],        age[b]);
+        swap(hireDate[a],   hireDate[b]);
+        swap(salary[a],     salary[b]);
+    }
+
+    // Returns true if employee a should come before employee b
+    // field: 1 = Salary, 2 = Age, 3 = Hire Date, 4 = Full Name
+    bool comesBefore(int a, int b, int field, bool ascending, const string name[], const int age[], const string hireDate[], const double salary[])
+    {
+        bool less, greater;
+        switch (field) {
+            case 1:  less = salary[a] < salary[b];      greater = salary[a] > salary[b];      break;
+            case 2:  less = age[a] < age[b];            greater = age[a] > age[b];            break;
+            case 3:  less = hireDate[a] < hireDate[b];  greater = hireDate[a] > hireDate[b];  break; // YYYY-MM-DD sorts correctly as text
+            default: less = toLowerCase(name[a]) < toLowerCase(name[b]);
+                     greater = toLowerCase(name[a]) > toLowerCase(name[b]);                   break;
+        }
+        return ascending ? less : greater;
+    }
+
+    // Menu option: display the table sorted by a chosen field.
+    // Sorts a COPY of the arrays, so the original order and employee.txt are not changed.
+    void sortMenu(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count)
+    {
+        cout<<"\n=========================SORT EMPLOYEES=============================\n";
+        if (count == 0) {
+            printError("No employee records to sort.");
+            return;
+        }
+
+        cout<<"Sort by:\n"
+            <<" 1. Monthly Salary\n"
+            <<" 2. Age\n"
+            <<" 3. Hire Date\n"
+            <<" 4. Full Name\n";
+        int field = readIntInRange("Enter your choice (1-4): ", 1, 4);
+
+        cout<<"Order:\n"
+            <<" 1. Ascending (low to high / A to Z / oldest first)\n"
+            <<" 2. Descending (high to low / Z to A / newest first)\n";
+        bool ascending = (readIntInRange("Enter your choice (1-2): ", 1, 2) == 1);
+
+        // Copy the data into local arrays
+        string sID[MAX_EMPLOYEES], sName[MAX_EMPLOYEES], sJob[MAX_EMPLOYEES], sDept[MAX_EMPLOYEES];
+        string sGender[MAX_EMPLOYEES], sHire[MAX_EMPLOYEES];
+        int sAge[MAX_EMPLOYEES];
+        double sSalary[MAX_EMPLOYEES];
+        for (int i = 0; i < count; i++) {
+            sID[i]     = employeeID[i];
+            sName[i]   = name[i];
+            sJob[i]    = jobTitle[i];
+            sDept[i]   = department[i];
+            sGender[i] = gender[i];
+            sAge[i]    = age[i];
+            sHire[i]   = hireDate[i];
+            sSalary[i] = salary[i];
+        }
+
+        // Selection sort on the copy
+        for (int i = 0; i < count - 1; i++) {
+            int best = i;
+            for (int j = i + 1; j < count; j++)
+                if (comesBefore(j, best, field, ascending, sName, sAge, sHire, sSalary))
+                    best = j;
+            if (best != i)
+                swapEmployees(i, best, sID, sName, sJob, sDept, sGender, sAge, sHire, sSalary);
+        }
+
+        // Reuse the existing display function to print the sorted copy
+        displayTable(sID, sName, sJob, sDept, sGender, sAge, sHire, sSalary, count);
+    }
+
     // Input validation helpers
     int readIntInRange(const string &prompt, int minValue, int maxValue)
     {
@@ -869,7 +955,7 @@ int selected = matchIndex[pick - 1];
         cout << "\033[32m[SUCCESS] " << msg << "\033[0m" << endl;
     }
 
-//SECTION 6: DISPLAY MAIN MENU (Member: Irine Wong Yien Hui) 
+//SECTION 7: DISPLAY MAIN MENU (Member: Irine Wong Yien Hui) 
     int main () {
         string employeeID[MAX_EMPLOYEES], name[MAX_EMPLOYEES], jobTitle[MAX_EMPLOYEES];
         string department[MAX_EMPLOYEES], gender[MAX_EMPLOYEES], hireDate[MAX_EMPLOYEES];
@@ -889,8 +975,9 @@ int selected = matchIndex[pick - 1];
                  << " 4. Delete Employee\n"
                  << " 5. Update Employee\n"
                  << " 6. Employee Statistics\n"
-                 << " 7. Exit\n\e[0m";
-            choice = readIntInRange("\033[34mPlease enter your choice: \033[0m", 1, 7);
+                 << " 7. Sort Employees\n"
+                 << " 8. Exit\n\e[0m";
+            choice = readIntInRange("\033[34mPlease enter your choice: \033[0m", 1, 8);
 
             switch (choice)
             {
@@ -913,10 +1000,13 @@ int selected = matchIndex[pick - 1];
                 statistic(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
                 break;
             case 7:
+                sortMenu(employeeID, name, jobTitle, department, gender, age, hireDate, salary, count);
+                break;
+            case 8:
                 cout << "\033[32mGoodbye!\033[0m\n"; //the random letters and numbers is to make the text green
                 break;
             }
-        } while (choice != 7);
+        } while (choice != 8);
          
         return 0;
     }
