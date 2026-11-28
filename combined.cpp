@@ -126,18 +126,48 @@ using namespace std;
             return false;
         }
 
-        outFile<<"ID\tFull Name\tJob Title\tDepartment\tGender\tAge\tHire Date\tMonthly Salary\n";
-
-        for(int i =0; i<count; i++) {
-            outFile<<employeeID[i]<<'\t'
-                   <<name[i]<<'\t'
-                   <<jobTitle[i]<<'\t'
-                   <<department[i]<<'\t'
-                   <<gender[i]<<'\t'
-                   <<age[i]<<'\t'
-                   <<hireDate[i]<<'\t'
-                   <<setprecision(10)<<salary[i]<<'\n';
+        // Turn every field into text first: 8 columns, row 0 is the header
+        const string header[NUM_FIELDS] = {"ID", "Full Name", "Job Title", "Department", "Gender", "Age", "Hire Date", "Monthly Salary"};
+        string cell[MAX_EMPLOYEES + 1][NUM_FIELDS];
+        for (int f = 0; f < NUM_FIELDS; f++)
+            cell[0][f] = header[f];
+        for (int i = 0; i < count; i++) {
+            stringstream sal;
+            sal << setprecision(10) << salary[i];
+            cell[i + 1][0] = employeeID[i];
+            cell[i + 1][1] = name[i];
+            cell[i + 1][2] = jobTitle[i];
+            cell[i + 1][3] = department[i];
+            cell[i + 1][4] = gender[i];
+            cell[i + 1][5] = to_string(age[i]);
+            cell[i + 1][6] = hireDate[i];
+            cell[i + 1][7] = sal.str();
         }
+
+        // Find how many tab stops (8 characters each) each column needs to fit its longest value
+        const int TAB_SIZE = 8;
+        int columnTabs[NUM_FIELDS];
+        for (int f = 0; f < NUM_FIELDS; f++) {
+            int longest = 0;
+            for (int r = 0; r <= count; r++)
+                if ((int)cell[r][f].length() > longest)
+                    longest = cell[r][f].length();
+            columnTabs[f] = (longest + 2 + TAB_SIZE - 1) / TAB_SIZE;   // at least 2 spaces gap between columns
+        }
+
+        // Write each row, adding enough tabs after each field so the columns line up.
+        // The file is still tab-separated, so loadEmployees() reads it normally.
+        for (int r = 0; r <= count; r++) {
+            for (int f = 0; f < NUM_FIELDS; f++) {
+                outFile << cell[r][f];
+                if (f < NUM_FIELDS - 1) {
+                    int tabsNeeded = columnTabs[f] - (int)cell[r][f].length() / TAB_SIZE;
+                    outFile << string(tabsNeeded, '\t');
+                }
+            }
+            outFile << '\n';
+        }
+
         outFile.close();
         return true;
     }
