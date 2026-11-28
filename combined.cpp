@@ -132,7 +132,7 @@ using namespace std;
         return true;
     }
 
-    // Save Employee (Member: Irine Wong Yien Hui)
+    // Save Employee (Member: Foo Yian Teng)
     // Rewrites employee.txt with header line format, followed by current employee records
     // Returns true if successful, false if file cannot be opened
     bool saveEmployees(const string employeeID[], const string name[], const string jobTitle[], const string department[], const string gender[], const int age[], const string hireDate[], const double salary[], int count)
